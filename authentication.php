@@ -6,6 +6,7 @@ require_once ("functions.php");
 if(session_status() === PHP_SESSION_NONE)
 {
     session_start();
+    echo "hellooo";
 }
 
 // Make sure the user came here by pressing the button
