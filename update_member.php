@@ -30,7 +30,7 @@ if(is_admin()):
             <div class="title">
                 <h1>تعديل بيانات العضو</h1>
             </div>
-            <form class="box"method="post" action="update_code.php" enctype="multipart/form-data">
+            <form class="box" method="post" action="update_code.php" enctype="multipart/form-data">
                 <div class="col">
 
                     <div class="row">
@@ -40,23 +40,21 @@ if(is_admin()):
                     <div class="row sp-row">
                                     <h4>النوع</h4>
                     <div class="row">
-                      <?=$user_row["gender"] == "M"
-                                    ? '<h4>ذكر</h4><input type="radio" value="M" name="gender" required checked>
-                                    <h4>أنثى</h4><input type="radio" value="F" name="gender" required>'
-                                    : '<h4>ذكر</h4><input type="radio" value="M" name="gender" required>
-                                    <h4>أنثى</h4><input type="radio" value="F" name="gender" required checked>'?>
+                        <?=$user_row["gender"] == "M"
+                            ? '<h4>ذكر</h4><input type="radio" value="M" name="gender" required checked>
+                                <h4>أنثى</h4><input type="radio" value="F" name="gender" required>'
+                            : '<h4>ذكر</h4><input type="radio" value="M" name="gender" required>
+                                <h4>أنثى</h4><input type="radio" value="F" name="gender" required checked>'?>
                     </div>
-                </div>
-                    <!-- Can't let admin change email & password of users -->
-                    <!--                    <div class="row">-->
-                    <!--                        <h4>البريد الالكتروني</h4><input type="email" name="email" placeholder="البريد الالكتروني" />-->
-                    <!--                    </div>-->
-                    <!--                    <div class="row">-->
-                    <!--                        <h4>كلمة السر</h4><input type="password" name="password" placeholder="كلمة السر" />-->
-                    <!--                    </div>-->
-                    <!--          <div class="row">-->
-                    <!--            <h4>رقم التليفون</h4><input type="text" placeholder="رقم التليفون" />-->
-                    <!--          </div>-->
+                    </div>
+                    <div class="row">
+                        <h4>البريد الالكتروني</h4><input type="email" name="email" placeholder="البريد الالكتروني"
+                                                         value="<?= $user_row['email'] ?>" />
+                    </div>
+                    <div class="row">
+                        <h4>كلمة السر</h4><input type="password" name="password" placeholder="تعديل كلمة السر" />
+                    </div>
+
                     <div class="row">
                         <h4>المسمى الوظيفي</h4><input type="text" name="job_title" placeholder="المسمى الوظيفي"
                         value="<?=$user_row['job_title']?>"/>

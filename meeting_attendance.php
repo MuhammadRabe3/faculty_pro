@@ -15,11 +15,11 @@ if(session_status() === PHP_SESSION_NONE)
     <?php if (isset($_POST["attendance_btn"])) : ?>
         <?php Nav();
 	    $attendance_users_stmt = $conn->prepare("SELECT 
-    															user_id 
-															FROM 
-															    p39_attendance 
-															WHERE 
-															    meeting_id = ?");
+                                                            user_id 
+                                                        FROM 
+                                                            p39_attendance 
+                                                        WHERE 
+                                                            meeting_id = ?");
 	    $attendance_users_stmt->bind_param("i", $_POST["meeting_id"]);
 	    $attendance_users_stmt->execute();
 	    $attendance_users_result = $attendance_users_stmt->get_result();
@@ -30,15 +30,19 @@ if(session_status() === PHP_SESSION_NONE)
 	    }
 	    $attendance_users_stmt->close();
 
-        $users_stmt = $conn->prepare("SELECT 
-                                                user_id, 
-                                                name
-                                            FROM 
-                                                p39_users 
-                                            WHERE 
-                                                is_admin = 0 
-                                              AND 
-                                                is_enabled = 1");
+        $users_stmt = $conn->prepare("SELECT
+                                                fu.user_id as uid,
+                                                u.name as n
+                                            FROM
+                                                p39_formation_user AS fu
+                                            JOIN p39_formation AS f
+                                            ON
+                                                f.formation_id = fu.formation_id 
+                                                    AND 
+                                                f.is_current = 1
+                                            JOIN p39_users AS u
+                                            ON
+                                                fu.user_id = u.user_id");
         $users_stmt->execute();
         $users_result = $users_stmt->get_result(); ?>
         <main class="meeting-attendance-page">
@@ -54,22 +58,22 @@ if(session_status() === PHP_SESSION_NONE)
                         </thead>
                         <tbody>
                         <?php while ($users_row = $users_result->fetch_assoc()) { ?>
-                            <?php if (!in_array($users_row["user_id"], $attendance_users)) { ?>
+                            <?php if (!in_array($users_row["uid"], $attendance_users)) { ?>
                                 <tr>
-                                    <td><?= $users_row["name"] ?></td>
+                                    <td><?= $users_row["n"] ?></td>
                                     <td>
-                                        <input type="hidden" name="<?= $users_row['user_id'] ?>" value="0">
+                                        <input type="hidden" name="<?= $users_row['uid'] ?>" value="0">
                                         <input type="checkbox" class="check"
-                                               name="<?= $users_row['user_id'] ?>" value="1">
+                                               name="<?= $users_row['uid'] ?>" value="1">
                                     </td>
                                 </tr>
                             <?php } else { ?>
                                 <tr>
-                                    <td><?= $users_row["name"] ?></td>
+                                    <td><?= $users_row["n"] ?></td>
                                     <td>
-                                        <input type="hidden" name="<?= $users_row['user_id'] ?>" value="0">
+                                        <input type="hidden" name="<?= $users_row['uid'] ?>" value="0">
                                         <input type="checkbox" class="check" checked
-                                               name="<?= $users_row['user_id'] ?>" value="1">
+                                               name="<?= $users_row['uid'] ?>" value="1">
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -87,11 +91,14 @@ if(session_status() === PHP_SESSION_NONE)
                 </form>
             </div>
         </main>
-    <?php endif; ?>
+    <?php else :
+        header("location: index.php", true, 303);
+    endif; ?>
     <?php footer(); ?>
 
     <!-- Js Scripts and Plugins -->
     <script type="module" src="./js/main.js"></script>
+    <script src="./js/select_all_button.js"></script>
 
     <!-- font Awesome -->
     <script src="https://kit.fontawesome.com/eb7dada2f7.js" crossorigin="anonymous"></script>

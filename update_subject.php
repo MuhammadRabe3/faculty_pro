@@ -25,6 +25,27 @@ Head("تعديل موضوع");
             <form class="box" method="post" action="update_code.php" enctype="multipart/form-data">
                 <div class="col">
                     <?php
+                    $subject_decision_stmt = $conn->prepare("SELECT decision_id FROM p39_decision WHERE subject_id = ?");
+                    $subject_decision_stmt->bind_param("i", $_POST["subject_id"]);
+                    $subject_decision_stmt->execute();
+                    $subject_decision_result = $subject_decision_stmt->get_result();
+                    $subject_decision_exists = $subject_decision_result->num_rows > 0;
+                    $subject_decision_stmt->close();
+
+                    $subject_att_stmt = $conn->prepare("SELECT attachment_id FROM p39_subject_attachment WHERE subject_id = ?");
+                    $subject_att_stmt->bind_param("i", $_POST["subject_id"]);
+                    $subject_att_stmt->execute();
+                    $subject_att_result = $subject_att_stmt->get_result();
+                    $subject_att_exist = $subject_att_result->num_rows > 0;
+                    $subject_att_stmt->close();
+
+                    $subject_pic_stmt = $conn->prepare("SELECT picture_id FROM p39_subject_picture WHERE subject_id = ?");
+                    $subject_pic_stmt->bind_param("i", $_POST["subject_id"]);
+                    $subject_pic_stmt->execute();
+                    $subject_pic_result = $subject_pic_stmt->get_result();
+                    $subject_pic_exist = $subject_pic_result->num_rows > 0;
+                    $subject_pic_stmt->close();
+
                     $subject_stmt = $conn->prepare("SELECT 
                                                                 *
                                                             FROM 
@@ -75,11 +96,6 @@ Head("تعديل موضوع");
                         </div>
                     </div>
                     <div class="row">
-                        <h4>رقم الموضوع</h4>
-                        <input type="number" name="subject_number" placeholder="رقم الموضوع" required min="1"
-                               value="<?= $subject_row['subject_number'] ?>" />
-                    </div>
-                    <div class="row">
                         <h4>عنوان الموضوع</h4><input type="text" name="subject_name" placeholder="عنوان الموضوع"
                                                      required value="<?= $subject_row['subject_name'] ?>"/>
                     </div>
@@ -123,12 +139,26 @@ Head("تعديل موضوع");
                     <div class="row sp2-row">
                         <form method="post" action="update_code.php">
                             <input type="hidden" name="subject_id" value="<?= $subject_row['subject_id'] ?>">
+                            <input type="hidden" name="meeting_id" value="<?= $subject_row['meeting_id'] ?>">
                             <button type="submit" class="btn-basic" name="update_subject_btn">تعديل موضوع</button>
                         </form>
-                        <form method="post" action="deletion_code.php">
-                            <input type="hidden" name="subject_id" value="<?= $subject_row['subject_id'] ?>">
-                            <button type="submit" class="btn-basic" name="delete_subject_btn">حذف موضوع</button>
-                        </form>
+                        <?php if (!$subject_decision_exists && !$subject_att_exist && !$subject_pic_exist) { ?>
+                            <!--<button type="button" class="btn-basic" data-open-modal>حذف الموضوع</button>
+                            <dialog data-modal>
+                                <form method="dialog">
+                                    <button formmethod="dialog" type="submit" class="btn-basic">إلغاء</button>
+                                    <button type="submit" class="btn-basic" name="delete_subject_btn">حذف</button>
+                                </form>
+                            </dialog>-->
+                            <form method="post" action="deletion_code.php">
+                                <input type="hidden" name="subject_id" value="<?= $subject_row['subject_id'] ?>">
+                                <input type="hidden" name="meeting_id" value="<?= $subject_row['meeting_id'] ?>">
+                                <button type="submit" class="btn-basic" name="delete_subject_btn">حذف الموضوع</button>
+                            </form>
+                        <?php } else { ?>
+                            <button type="button" class="btn-basic disabled" disabled
+                                    title="لا يمكن حذف موضوع له قرار أو مرفقات">حذف الموضوع</button>
+                        <?php } ?>
                     </div>
                 </div>
             </form>

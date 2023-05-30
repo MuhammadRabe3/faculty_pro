@@ -15,9 +15,8 @@ Head("اضافة موضوع");
 <body dir="rtl">
 <?php
 Headers();
-Nav();
 if (is_admin()):
-	?>
+	Nav(); ?>
     <main class="add-member-page">
         <div class="container">
             <!-- عنوان الصفحة -->
@@ -26,11 +25,6 @@ if (is_admin()):
             </div>
             <form class="box" method="post" action="addition_code.php" enctype="multipart/form-data">
                 <div class="col">
-                    <div class="row">
-                        <h4>رقم الموضوع</h4>
-                        <input type="number" name="subject_number" placeholder="رقم الموضوع" required min="1" />
-                    </div>
-
                     <div class="row">
                         <h4>عنوان الموضوع</h4>
                         <input type="text" name="subject_name" placeholder="عنوان الموضوع" required/>
@@ -96,15 +90,19 @@ if (is_admin()):
                         <textarea name="subject_comments"></textarea>
                     </div>
                     <!-- محاولة الدايالوج الفاشلة -->
-                    <div class="row">
+                    <!-- أو لأ طلعت ناجحة، بعتذر لصاحب الكود -->
+                    <!--<div class="row">
                         <button type="button" class="btn-basic" data-open-modal>اضافة موضوع جديد</button>
                         <dialog data-modal>
                             <form method="dialog">
-                                <input type="text" />
                                 <button formmethod="dialog" type="submit" class="btn-basic">Cancel</button>
-                                <button type="submit" class="btn-basic">Submit</button>
+                                <button type="submit" class="btn-basic" name="add_subject_btn">Submit</button>
                             </form>
                         </dialog>
+                    </div>-->
+                    <div class="row">
+                        <input type="hidden" name="meeting_id" value="<?= $_POST['meeting_id'] ?>"/>
+                        <button name="add_subject_btn" class="btn-basic" type="submit">إضافة موضوع جديد</button>
                     </div>
                 </div>
             </form>

@@ -81,17 +81,6 @@ Head("اضافة تشكيل");
                         </div>
                     </div>
                     <div class="row">
-                        <h4>حالة التشكيل</h4>
-                        <div class="select-basic">
-                            <select name="is_current" required>
-                                <option value="">اختر</option>
-                                <option value="1">حالي</option>
-                                <option value="0">سابق</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <button type="submit" class="btn-basic" name="add_formation_btn">اضافة تشكيل جديد</button>
                     </div>
                 </div>

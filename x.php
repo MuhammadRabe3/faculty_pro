@@ -1,4 +1,9 @@
 <?php
+require_once "functions.php";
+if (session_status() === PHP_SESSION_NONE)
+{
+	session_start();
+}
 
 $job_title = array();
 foreach ($_POST as $key => $value)
@@ -45,6 +50,8 @@ foreach ($_POST as $key => $value)
 
 	}
 }
+$attachment_allowed_types = array("pdf", "png", "gif", "jpeg", "jpg");
+$uploaded_attachments = Upload("decision_attachment", "images/", $attachment_allowed_types);
 
 echo "<pre>";
 print_r($if1);
@@ -55,5 +62,13 @@ print_r($if0);
 echo "</pre>";
 
 echo "<pre>";
-print_r($elseif);
+print_r($_SESSION);
+echo "</pre>";
+
+echo "<pre>";
+print_r($_FILES);
+echo "</pre>";
+
+echo "<pre>";
+print_r($uploaded_attachments);
 echo "</pre>";

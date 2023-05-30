@@ -74,6 +74,7 @@
 }
 .add-meeting,
 .add-member {
+	display: inline-block;
 	position: sticky;
 	bottom: 15px;
 }
@@ -125,6 +126,48 @@
 	.member-box .row > .col:nth-child(2) {
 		align-items: center;
 	}
+	.card {
+		display: none;
+	}
+}
+.meeting-box .row > .col:nth-child(2),
+.old-meeting-box .row > .col:nth-child(2) {
+	gap: 10px;
+}
+.old-meeting-box .row .col {
+	gap: 20px;
+}
+.card .card-box {
+	background-color: var(--tangaroa);
+	color: #fff;
+	width: 25px;
+	text-align: center;
+	border-radius: 50%;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.card {
+	/* padding: 2vmin; */
+
+	border-radius: 5px;
+	flex: 1;
+}
+.card .card-text {
+	text-align: center;
+	font-size: 0.9em;
+	color: var(--headings-color);
+	min-height: 42px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.meeting-box .row .col > .row,
+.old-meeting-box .row .col > .row {
+	column-gap: 25px;
+	margin: 0;
+	align-items: stretch;
 }
 
 /* Old Meetings */
@@ -143,7 +186,7 @@
 	text-align: center;
 }
 
-/* *Css for Meetings Page */
+/* *Css for Members Page */
 /* ############################ */
 .member-box .member-image {
 	width: 40vmin;
@@ -172,24 +215,57 @@
 	align-items: center;
 	margin: 75px;
 }
+.decision-filter .row {
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
 
 .decision-box .row {
 	margin-bottom: 20px;
 }
-
-.decision-box .decision-buttons > .row:nth-child(1),
-.decision-box .decision-buttons form > .row:nth-child(2) {
-	flex-direction: column;
+.decision-box .row .col {
+	gap: 20px;
 }
-.decision-box .decision-buttons form > .row:nth-child(1) {
+
+.decision-box .decision-buttons > .row,
+.decision-box .decision-buttons form > .row {
 	justify-content: space-evenly;
 }
+
 .decision-box .decision-buttons .row > .col {
 	align-items: center;
 }
-
-.non-executed-dec {
-	margin-top: 150px;
+.decision-upload {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.decision-upload .btn-basic label {
+	cursor: pointer;
+}
+.decision-file {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+	border: 2px solid #64748b;
+	border-radius: var(--box-radius);
+	padding: 10px;
+	margin: 3px 5px;
+}
+.decision-file-container {
+	display: flex;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+	text-align: center;
+	margin-top: 50px;
+}
+.decision-file button {
+	align-self: center;
+	font-size: 0.8em;
+	padding: 0.5em;
 }
 
 /* *Css for Add Member Page */
@@ -331,11 +407,12 @@
 }
 
 .add-current-subject {
+	display: inline-block;
 	position: sticky;
 	bottom: 15px;
 }
 .box .current-subject-details {
-	margin-top: 70px;
+	/* margin-top: 70px; */
 	padding: 10px;
 }
 
@@ -390,6 +467,7 @@
 .add-formation {
 	position: sticky;
 	bottom: 15px;
+	display: inline-block;
 }
 .current-formation .box {
 	display: flex;
@@ -430,21 +508,22 @@
 	margin: 10px;
 }
 
-.add-attachment,
+/* .add-attachment,
 .add-attachment-subject {
-	position: sticky;
-	bottom: 15px;
-}
-.add-attachment {
+  position: sticky;
+  bottom: 15px;
+  display: inline-block;
+} */
+/* .add-attachment {
 	max-width: 240px;
-}
-.add-attachment-subject {
+} */
+/* .add-attachment-subject {
 	max-width: 140px;
-}
-.add-attachment label,
+} */
+/* .add-attachment label,
 .add-attachment-subject label {
 	max-width: 100%;
-}
+} */
 
 .attachment-content .attatchement-box {
 	display: grid;
@@ -492,7 +571,17 @@ dialog h4 {
 	margin-bottom: 10px;
 }
 dialog form {
+	display: flex;
+	flex-direction: column;
 	text-align: center;
+	justify-content: space-evenly;
+	align-items: stretch;
+	padding: 20px;
+}
+.dialog-col {
+	width: fit-content;
+	position: sticky;
+	bottom: 15px;
 }
 .attachment-picture {
 	width: 100px;
@@ -524,6 +613,10 @@ dialog form {
 	border-collapse: collapse;
 	width: 100%;
 	border: 1px solid var(--secondary-color);
+}
+.add-formation-member-page table,
+.attend-table {
+	width: 80%;
 }
 .meeting-attendance-page table th:first-child,
 .add-formation-member-page table th:first-child {
@@ -559,7 +652,7 @@ dialog form {
 /* *Css for Subject Table Page */
 /* ################################# */
 
-.subjects-table-page .print-container {
+.print-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -603,24 +696,9 @@ dialog form {
 	max-width: 100%;
 	min-width: 400px;
 }
-
-@media print {
-	* {
-		color: #000 !important;
-	}
-	body {
-		font-family: "Times New Roman", Times, serif;
-		line-height: 1.5;
-	}
-
-	header .user-logged,
-	header .header-title .project-title,
-	.nav-bar,
-	footer,
-	button,
-	.subjects-table-page .title h1 {
-		display: none;
-	}
+.subjects-table tr td:last-child p,
+.subjects-table tr td:last-child strong {
+	min-width: 400px;
 }
 
 /* *Css for Finished Meetings Files */
@@ -634,4 +712,41 @@ dialog form {
 .meetings-members table tr td:first-child,
 .meetings-members table tr td:last-child {
 	width: 50%;
+}
+
+/* *Css for All Subjects Page  */
+/* ##################################### */
+
+.all-subject-content {
+	margin: 10px;
+}
+.all-subject-content h4 {
+	max-width: 500px;
+}
+
+/* ddddddddd */
+.piechart {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+#piechart {
+	width: 600px;
+	height: 400px;
+}
+.vote-table {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 50px 0;
+	gap: 45px;
+}
+@media (max-width: 750px) {
+	#piechart {
+		width: 300px;
+		height: 300px;
+		overflow-y: auto;
+	}
 }

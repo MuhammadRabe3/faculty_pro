@@ -30,18 +30,6 @@ for (let i = 0; i < uploadLabel.length; i++) {
 	});
 }
 
-// Details Button Toggle
-let allMemberDetailsButtons = document.querySelectorAll(
-	".member-box .member-details-btn"
-);
-
-allMemberDetailsButtons.forEach((btn) => {
-	btn.addEventListener("click", () => {
-		let memberDetails = btn.parentElement.parentElement.nextElementSibling;
-		memberDetails.classList.toggle("deactive");
-	});
-});
-
 const buttons = document.querySelectorAll(".upload-button");
 const fileLists = document.querySelectorAll(".file-list");
 
@@ -68,41 +56,19 @@ function displayFile(files, fileList) {
 	}
 }
 
-// Toggle Decision Details Button
-let allDecisionDetailsButtons = document.querySelectorAll(
-	".decision-buttons button.dec-details-btn"
-);
-allDecisionDetailsButtons.forEach((ele) => {
-	ele.addEventListener("click", () => {
-		ele.nextElementSibling.classList.toggle("deactive");
-	});
+console.log("AYMAN");
+
+// Links Toggler
+
+const toggler = document.querySelector("nav ul .icon");
+const linksDiv = document.querySelector("nav ul .links");
+const linksDivOpen = document.querySelector("nav ul .links.open");
+
+toggler.addEventListener("click", () => {
+	linksDiv.classList.toggle("open");
 });
 
 // mohamed fathi
-// Toggle Current Subject Details Button
-// Details Button Toggle
-let allSubjectDetailsButtons = document.querySelectorAll(
-	".box .subject-details-btn"
-);
-
-allSubjectDetailsButtons.forEach((btn) => {
-	btn.addEventListener("click", () => {
-		let subjectDetails = btn.parentElement.parentElement.nextElementSibling;
-		subjectDetails.classList.toggle("deactive");
-	});
-});
-
-// Select All Checkbox in Attendance
-
-const allCheckBoxes = document.querySelectorAll(".check");
-const selectAllCheck = document.querySelector(".select-all");
-
-allCheckBoxes.forEach((check) => {
-	selectAllCheck.addEventListener("click", () => {
-		check.checked = selectAllCheck.checked;
-	});
-});
-
 //dialog
 const openButton = document.querySelectorAll("[data-open-modal]");
 const closeButton = document.querySelector("[data-close-modal]");
@@ -116,36 +82,3 @@ openButton.forEach((openBtn) => {
 // closeButton.addEventListener("click", () => {
 //   modal.close();
 // });
-
-console.log("AYMAN");
-// Links Toggler
-
-const toggler = document.querySelector("nav ul .icon");
-const linksDiv = document.querySelector("nav ul .links");
-
-toggler.addEventListener("click", () => {
-	linksDiv.classList.toggle("deactive");
-});
-
-// Does it have an executive response toggle in Add Decision & Update Decision Pages
-
-const yesCheckBox = document.querySelector(".resp-yes");
-const noCheckBox = document.querySelector(".resp-no");
-const responseToRow = document.querySelector(".resp-to");
-const isExcutiveRow = document.querySelector(".is-excu");
-
-console.log(isExcutiveRow);
-
-yesCheckBox.addEventListener("click", () => {
-	responseToRow.classList.remove("deactive");
-	isExcutiveRow.classList.remove("deactive");
-});
-noCheckBox.addEventListener("click", () => {
-	responseToRow.classList.add("deactive");
-	isExcutiveRow.classList.add("deactive");
-});
-
-if (yesCheckBox.checked === true) {
-	responseToRow.classList.remove("deactive");
-	isExcutiveRow.classList.remove("deactive");
-}

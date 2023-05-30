@@ -32,7 +32,8 @@ VALUES ("عميد"),
        ("وكيل الكلية"),
        ("رئيس قسم"),
        ("عضو هيئة تدريس"),
-       ("إداري");
+       ("إداري"),
+       ("أخرى");
 
 CREATE TABLE IF NOT EXISTS p39_job_rank
 (
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS p39_users
     job_rank_id   TINYINT UNSIGNED,
     department_id TINYINT UNSIGNED,
     gender        ENUM ("M", "F") character set utf8 collate utf8_unicode_520_ci,
-    image         VARCHAR(255) character set utf8 collate utf8_unicode_520_ci DEFAULT "	images/members/user.png",
+    image         VARCHAR(255) character set utf8 collate utf8_unicode_520_ci DEFAULT "images/members/user.svg",
     email         VARCHAR(255) character set utf8 collate utf8_unicode_520_ci UNIQUE,
     password      VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     is_admin      TINYINT UNSIGNED,
@@ -120,21 +121,21 @@ CREATE TABLE IF NOT EXISTS p39_user_transaction
     new_row          VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     made_on          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     made_by          SMALLINT UNSIGNED,
-    FOREIGN KEY (made_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY (user_id) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    FOREIGN KEY (made_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS p39_meeting
 (
     meeting_id     SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    meeting_number MEDIUMINT UNSIGNED UNIQUE,
+    meeting_number MEDIUMINT UNSIGNED,
     meeting_month  SMALLINT UNSIGNED,
     meeting_year   YEAR,
-    meeting_date   DATE             DEFAULT NULL,
-    is_current     TINYINT UNSIGNED DEFAULT 1,
-    status         ENUM ("pending", "confirmed", "finished"),
+    meeting_date   DATE                                      DEFAULT NULL,
+    is_current     TINYINT UNSIGNED                          DEFAULT 1,
+    status         ENUM ("pending", "confirmed", "finished") DEFAULT "pending",
+    is_showed      TINYINT UNSIGNED                          DEFAULT 0,
     formation_id   SMALLINT UNSIGNED,
-    added_on       TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    added_on       TIMESTAMP                                 DEFAULT CURRENT_TIMESTAMP,
     added_by       SMALLINT UNSIGNED,
     FOREIGN KEY (added_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (formation_id) REFERENCES p39_formation (formation_id) ON UPDATE CASCADE ON DELETE RESTRICT
@@ -149,8 +150,7 @@ CREATE TABLE IF NOT EXISTS p39_meeting_transaction
     new_row          VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     made_on          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     made_by          SMALLINT UNSIGNED,
-    FOREIGN KEY (made_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY (meeting_id) REFERENCES p39_meeting (meeting_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    FOREIGN KEY (made_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS p39_meeting_attachment
@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS p39_meeting_attachment
     attachment_name  VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     attachment_title VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     meeting_id       SMALLINT UNSIGNED,
+    is_final         TINYINT UNSIGNED,
     added_on         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     added_by         SMALLINT UNSIGNED,
     FOREIGN KEY (added_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -181,12 +182,13 @@ VALUES ("شئون التعليم والطلاب"),
        ("قسم العلوم السياسية"),
        ("قسم نظم المعلومات"),
        ("لجنة البرامج"),
-       ("موضوعات عامة");
+       ("موضوعات عامة"),
+       ("لجنة البرامج الجديدة");
 
 CREATE TABLE IF NOT EXISTS p39_subject
 (
     order_id        TINYINT UNSIGNED DEFAULT NULL,
-    subject_id      INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    subject_id      MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     subject_number  MEDIUMINT UNSIGNED,
     subject_name    VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     subject_details TEXT character set utf8 collate utf8_unicode_520_ci,
@@ -204,31 +206,20 @@ CREATE TABLE IF NOT EXISTS p39_subject_transaction
 (
     transaction_id   SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     transaction_type ENUM ("Edit", "Delete"),
-    subject_id       INT UNSIGNED,
+    subject_id       MEDIUMINT UNSIGNED,
     old_row          VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     new_row          VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     made_on          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     made_by          SMALLINT UNSIGNED,
-    FOREIGN KEY (made_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY (subject_id) REFERENCES p39_subject (subject_id) ON UPDATE CASCADE ON DELETE RESTRICT
+    FOREIGN KEY (made_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
-
-# CREATE TABLE IF NOT EXISTS p39_deleted_subject
-# (
-#     delete_id   SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-#     subject_row VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
-#     deleted_by  SMALLINT,
-#     deleted_on  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-#     reason      VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
-#     FOREIGN KEY (deleted_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT
-# );
 
 CREATE TABLE IF NOT EXISTS p39_subject_attachment
 (
     attachment_id    SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     attachment_name  VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     attachment_title VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
-    subject_id       INT UNSIGNED,
+    subject_id       MEDIUMINT UNSIGNED,
     added_on         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     added_by         SMALLINT UNSIGNED,
     FOREIGN KEY (added_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -240,7 +231,7 @@ CREATE TABLE IF NOT EXISTS p39_subject_picture
     picture_id    SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     picture_name  VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     picture_title VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
-    subject_id    INT UNSIGNED,
+    subject_id    MEDIUMINT UNSIGNED,
     added_on      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     added_by      SMALLINT UNSIGNED,
     FOREIGN KEY (added_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -252,13 +243,17 @@ CREATE TABLE IF NOT EXISTS p39_decision_type
     decision_type_id   TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     decision_type_name VARCHAR(255) character set utf8 collate utf8_unicode_520_ci
 );
+INSERT INTO p39_decision_type(decision_type_name)
+VALUES ("موافقة"),
+       ("رفض"),
+       ("تأجيل");
 
 CREATE TABLE IF NOT EXISTS p39_decision
 (
     decision_id      SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     decision_details TEXT character set utf8 collate utf8_unicode_520_ci,
     decision_type_id TINYINT UNSIGNED,
-    subject_id       INT UNSIGNED,
+    subject_id       MEDIUMINT UNSIGNED,
     needs_action     TINYINT UNSIGNED,
     action_to        VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
     is_action_done   TINYINT UNSIGNED,
@@ -268,6 +263,18 @@ CREATE TABLE IF NOT EXISTS p39_decision
     FOREIGN KEY (added_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (decision_type_id) REFERENCES p39_decision_type (decision_type_id) ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (subject_id) REFERENCES p39_subject (subject_id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS p39_decision_attachment
+(
+    attachment_id    SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    attachment_name  VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
+    attachment_title VARCHAR(255) character set utf8 collate utf8_unicode_520_ci,
+    decision_id      SMALLINT UNSIGNED,
+    added_on         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    added_by         SMALLINT UNSIGNED,
+    FOREIGN KEY (added_by) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (decision_id) REFERENCES p39_decision (decision_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS p39_attendance
@@ -288,7 +295,7 @@ CREATE TABLE IF NOT EXISTS p39_vote_type
 CREATE TABLE IF NOT EXISTS p39_vote
 (
     user_id      SMALLINT UNSIGNED,
-    subject_id   INT UNSIGNED,
+    subject_id   MEDIUMINT UNSIGNED,
     PRIMARY KEY (user_id, subject_id),
     vote_type_id TINYINT UNSIGNED,
     added_on     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -296,6 +303,10 @@ CREATE TABLE IF NOT EXISTS p39_vote
     FOREIGN KEY (vote_type_id) REFERENCES p39_vote_type (vote_type_id) ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (subject_id) REFERENCES p39_subject (subject_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
+INSERT INTO p39_vote_type (vote_type_name)
+VALUES ("موافقة"),
+       ("رفض"),
+       ("امتناع");
 
 
 ###### Dummy Data #######
@@ -305,6 +316,10 @@ INSERT INTO `p39_users` (`user_id`, `name`, `job_title`, `job_type_id`, `job_ran
                          `email`, `password`, `is_admin`, `added_by`, `is_enabled`)
 VALUES (NULL, 'محمود بدر', 'Admin', '1', '1', '1', 'M', 'm@hotmail.com',
         '$2y$10$QyL5sGwbWIk./cUXORlNV.9C4ZZsHPV6llGcX5WggZ8tyGcNo0tXS', '1', NULL, '1'),
+
+       (NULL, 'محمد ايمن', 'Admin', '1', '1', '1', 'M', 'aymon@gmail.com',
+        '$2y$10$QyL5sGwbWIk./cUXORlNV.9C4ZZsHPV6llGcX5WggZ8tyGcNo0tXS', '1', NULL, '1'),
+
        (NULL, 'دكتور 1', 'Doctor', '2', '2', '2', 'F', 'd@hotmail.com',
         '$2y$10$jtRDgq2Biaz14RYq8hKcaOdegq6P8gErvotb1c11.ANXWcs4j55nG', '0', '1', '1');
 

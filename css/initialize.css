@@ -81,6 +81,11 @@ input::placeholder {
 		width: 750px;
 	}
 }
+@media (max-width: 992px) {
+	.meetings-content .container {
+		width: auto;
+	}
+}
 
 /* Medium */
 @media (min-width: 992px) {
@@ -214,10 +219,12 @@ nav ul .icon {
 }
 
 /* medium screen */
-@media (max-width: 942px) {
+@media (max-width: 1140px) {
 	nav ul .icon {
 		display: block;
+		cursor: pointer;
 	}
+
 	nav ul,
 	nav ul .links {
 		flex-direction: column;
@@ -226,9 +233,17 @@ nav ul .icon {
 	nav .deactive {
 		display: none;
 	}
-	nav ul .links {
+	nav .links {
+		max-height: 0;
+		overflow: hidden;
+		transition: 0.5s;
+	}
+
+	nav .links.open {
+		max-height: 350px;
 		margin-top: 40px;
 	}
+
 	nav ul li {
 		margin: 10px 0;
 	}
@@ -264,6 +279,7 @@ footer p {
 	text-align: center;
 	font-size: 16px;
 	cursor: pointer;
+	min-width: 80px;
 }
 .btn-basic:active {
 	border: 1px solid #000;
@@ -341,6 +357,19 @@ input[type="radio"]:checked {
 }
 
 /* 4. Search Bar */
+.search-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 50px;
+	gap: 20px;
+}
+
+.container .search-container {
+	display: none;
+}
+
 .search {
 	display: flex;
 	justify-content: center;
@@ -352,15 +381,34 @@ input[type="radio"]:checked {
 	border-radius: 0%;
 	margin: 0;
 	padding: 10px 15px;
+}
+.search button,
+.search input,
+.search .select-basic {
 	height: 40px;
+}
+@media (max-width: 768px) {
+	.search button,
+	.search input,
+	.search .select-basic {
+		height: 37px;
+	}
 }
 .search input {
 	width: 23vmax;
 	max-width: 230px;
-	border-radius: 0 7px 7px 0;
 }
 .search button {
 	border-radius: 7px 0px 0 7px;
+	min-width: auto;
+}
+@media (max-width: 420px) {
+	.container .search-container {
+		display: flex;
+	}
+	nav .search {
+		display: none;
+	}
 }
 
 /* 5. Select Drop Down Lists */
@@ -402,6 +450,7 @@ input[type="radio"]:checked {
 	border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
 	cursor: pointer;
 	user-select: none;
+	border-radius: 0 7px 7px 0;
 }
 
 .select-items {
@@ -412,7 +461,13 @@ input[type="radio"]:checked {
 	right: 0;
 	z-index: 99;
 }
-
+.search .select-items {
+	position: absolute;
+}
+.search .select-basic {
+	width: 23vmin;
+	min-width: 100px;
+}
 .select-hide {
 	display: none;
 }
@@ -463,4 +518,62 @@ input[type="file"] {
 	height: 110px;
 }
 
+/* 7. Errors */
+.error {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	gap: 25px;
+	min-height: calc(100vh - 233px);
+}
+.error img {
+	width: 50px;
+	height: 50px;
+}
+.error p {
+	color: rgb(144, 41, 41);
+	font-size: 1.3rem;
+	font-weight: 800;
+}
+
+/* Printing Stuff */
+@page {
+	size: A4;
+	margin: 50px 0;
+}
+@media print {
+	* {
+		color: #000 !important;
+	}
+	body {
+		font-family: "Times New Roman", Times, serif;
+		line-height: 1.5;
+	}
+
+	header .user-logged,
+	header .header-title .project-title,
+	header .header-title .prog-name,
+	.nav-bar,
+	footer,
+	button,
+	.subjects-table-page .title h1,
+	.prog-logo {
+		display: none;
+	}
+	header .header-container {
+		justify-content: center;
+	}
+	header .univ-logo {
+		width: 70px;
+		height: 80px;
+	}
+	table td {
+		page-break-inside: avoid;
+	}
+	.table-container {
+		margin: 0;
+	}
+}
 /* !DONT TOUCH (VARIABLES / GLOBAL RULES / HEADER / FOOTER / Navigation) FROM ABOVE* */

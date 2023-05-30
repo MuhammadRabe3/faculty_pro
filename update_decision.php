@@ -98,39 +98,39 @@ if (session_status() === PHP_SESSION_NONE) {
                         </div>
                     </div>
                     <div class="row resp-to deactive">
-                        <h4>الجواب التنفيذي موجه لـ</h4>
+                        <h4>الجواب التنفيذي موجه إلى:</h4>
                         <input type="text" name="action_to" value="<?= $decision_row['action_to'] ?>"/>
                     </div>
 
-                    <div class="row sp-row is-excu deactive">
-                        <h4>هل تم تنفيذ القرار؟</h4>
-                        <div class="row ">
-							<?php switch ($decision_row["is_action_done"]) {
-								case "0":
-								case NULL: ?>
-                                    <div class="col">
-                                        <h5>نعم</h5>
-                                        <input type="radio" name="is_action_done" value="1">
-                                    </div>
-                                    <div class="col">
-                                        <h5>لا</h5>
-                                        <input type="radio" name="is_action_done" value="0" checked>
-                                    </div>
-									<?php break; ?>
-
-								<?php case "1": ?>
-                                    <div class="col">
-                                        <h5>نعم</h5>
-                                        <input type="radio" name="is_action_done" value="1" checked>
-                                    </div>
-                                    <div class="col">
-                                        <h5>لا</h5>
-                                        <input type="radio" name="is_action_done" value="0">
-                                    </div>
-									<?php break; ?>
-								<?php } ?>
-                        </div>
-                    </div>
+<!--                    <div class="row sp-row is-excu deactive">-->
+<!--                        <h4>هل تم تنفيذ القرار؟</h4>-->
+<!--                        <div class="row ">-->
+<!--							--><?php //switch ($decision_row["is_action_done"]) {
+//								case "0":
+//								case NULL: ?>
+<!--                                    <div class="col">-->
+<!--                                        <h5>نعم</h5>-->
+<!--                                        <input type="radio" name="is_action_done" value="1">-->
+<!--                                    </div>-->
+<!--                                    <div class="col">-->
+<!--                                        <h5>لا</h5>-->
+<!--                                        <input type="radio" name="is_action_done" value="0" checked>-->
+<!--                                    </div>-->
+<!--									--><?php //break; ?>
+<!---->
+<!--								--><?php //case "1": ?>
+<!--                                    <div class="col">-->
+<!--                                        <h5>نعم</h5>-->
+<!--                                        <input type="radio" name="is_action_done" value="1" checked>-->
+<!--                                    </div>-->
+<!--                                    <div class="col">-->
+<!--                                        <h5>لا</h5>-->
+<!--                                        <input type="radio" name="is_action_done" value="0">-->
+<!--                                    </div>-->
+<!--									--><?php //break; ?>
+<!--								--><?php //} ?>
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="row">
                         <h4>ملاحظات</h4>
                         <textarea name="decision_comments"><?= $decision_row["comments"] ?></textarea>
@@ -139,16 +139,30 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="row sp2-row">
                         <form method="post" action="update_code.php">
                             <input type="hidden" name="decision_id" value="<?= $decision_row['decision_id'] ?>">
+                            <input type="hidden" name="meeting_id" value="<?= $_POST['meeting_id'] ?>">
                             <button type="submit" class="btn-basic" name="update_decision_btn">
-                                تعديل قرار للموضوع
+                                تعديل القرار
                             </button>
                         </form>
-                        <form method="post" action="deletion_code.php">
-                            <input type="hidden" name="decision_id" value="<?= $decision_row['decision_id'] ?>">
-                            <button type="submit" class="btn-basic" name="update_decision_btn">
-                                حذف قرار للموضوع
-                            </button>
-                        </form>
+                        <?php
+                        $decision_att_stmt = $conn->prepare("SELECT attachment_id FROM p39_decision_attachment WHERE decision_id = ?");
+                        $decision_att_stmt->bind_param("i", $decision_row["decision_id"]);
+                        $decision_att_stmt->execute();
+                        $decision_att_result = $decision_att_stmt->get_result();
+                        $decision_att_exist = $decision_att_result->num_rows > 0;
+                        $decision_att_stmt->close();
+                        if (!$decision_att_exist) { ?>
+                            <form method="post" action="deletion_code.php">
+                                <input type="hidden" name="decision_id" value="<?= $decision_row['decision_id'] ?>">
+                                <input type="hidden" name="meeting_id" value="<?= $_POST['meeting_id'] ?>">
+                                <button type="submit" class="btn-basic" name="delete_decision_btn">
+                                    حذف القرار
+                                </button>
+                            </form>
+                        <?php } else { ?>
+                            <button type="button" class="btn-basic disabled" disabled
+                                    title="لا يمكن حذف قرار له مرفقات">حذف القرار</button>
+                        <?php } ?>
                     </div>
                 </div>
             </form>
@@ -159,6 +173,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <!-- Js Scripts and Plugins -->
 <script type="module" src="./js/main.js"></script>
+<script src="./js/add_update_decision.js"></script>
 
 <!-- font Awesome -->
 <script src="https://kit.fontawesome.com/eb7dada2f7.js" crossorigin="anonymous"></script>

@@ -58,7 +58,7 @@ if (session_status() === PHP_SESSION_NONE) {
                                 </div>
                             </div>
                             <div class="row resp-to deactive">
-                                <h4>الجواب التنفيذي موجه لـ</h4>
+                                <h4>الجواب التنفيذي موجه إلى</h4>
                                 <input type="text" name="action_to" placeholder="الجهة الموجه لها الجواب التنفيذي"/>
                             </div>
                             <div class="row">
@@ -76,6 +76,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
                             <div class="row">
                                 <input type="hidden" name="subject_id" value="<?= $_POST['subject_id'] ?>">
+                                <input type="hidden" name="meeting_id" value="<?= $_POST['meeting_id'] ?>">
                                 <button type="submit" class="btn-basic" name="add_decision_btn">اضافة قرار للموضوع</button>
                             </div>
                         </div>
@@ -94,6 +95,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <!-- Js Scripts and Plugins -->
     <script type="module" src="./js/main.js"></script>
+    <script src="./js/add_update_decision.js"></script>
 
     <!-- font Awesome -->
     <script src="https://kit.fontawesome.com/eb7dada2f7.js" crossorigin="anonymous"></script>
