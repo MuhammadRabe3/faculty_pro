@@ -24,31 +24,29 @@ if (session_status() === PHP_SESSION_NONE)
                 </div>
                 <?php if ($_SESSION["admin"]) { ?>
                     <div class="box">
-<!--                        <div class="row">-->
-<!--                            <div class="col">-->
-<!--                                <a href="formation.php" class="btn-basic">التشكيلات السنوية</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
+
                         <div class="row">
                             <div class="col">
                                 <a href="meetings.php" class="btn-basic">المجالس</a>
                             </div>
                             <div class="col">
-                                <a href="all_subjects.php?f=all" class="btn-basic">جميع الموضوعات</a>
+                            <a href="formation.php" class="btn-basic">التشكيلات السنوية</a>
+                                
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <a href="subjects_table.php" class="btn-basic">جدول الأعمال</a>
+                                
+                                <a href="all_subjects.php?f=all" class="btn-basic">جميع الموضوعات</a>
                             </div>
                             <div class="col">
                                 <a href="members.php" class="btn-basic">الأعضاء</a>
                             </div>
                         </div>
                         <div class="row">
-<!--                            <div class="col"><a href="#" class="btn-basic">الموضوعات</a></div>-->
+
                             <div class="col">
-                                <a href="formation.php" class="btn-basic">التشكيلات السنوية</a>
+                            <a href="subjects_table.php" class="btn-basic">جدول الأعمال</a>
                             </div>
                             <div class="col">
                                 <a href="executive_decisions.php" class="btn-basic">القرارات التنفيذية</a>
@@ -66,9 +64,7 @@ if (session_status() === PHP_SESSION_NONE)
                             <div class="col">
                                 <a href="subjects_table.php" class="btn-basic">جدول الأعمال</a>
                             </div>
-                            <!--<div class="col">
-                                <a href="" class="btn-basic">التقارير</a>
-                            </div>-->
+
                             <div class="col">
                                 <a href="formation.php" class="btn-basic">التشكيلات السنوية</a>
                             </div>

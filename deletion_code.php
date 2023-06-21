@@ -119,5 +119,15 @@ foreach ($_POST as $key=>$value)
 			$delete_att_stmt->execute();
 			header("location: executive_decisions.php?f=1", true, 303);
 			break;
+
+		case "delete_formation_btn":
+			$delete_dates_stmt = Delete($conn, "p39_dates", "formation_id = {$_POST['formation_id']}");
+			if ($delete_dates_stmt->execute())
+			{
+				$delete_formation_stmt = Delete($conn, "p39_formation", "formation_id = {$_POST['formation_id']}");
+				$delete_formation_stmt->execute();
+			}
+			header("location: formation.php", true, 303);
+			break;
 	}
 }

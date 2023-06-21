@@ -10,10 +10,11 @@ if(session_status() === PHP_SESSION_NONE)
 
 // Make sure the user came here by pressing the button
 if (isset($_POST["sign_in_btn"])):
+	$_SESSION["email"] = $_POST["email"];
     // check the email entered
-    if (is_valid_email($_POST["email"]))
+    if (is_valid_email(clean_data($_POST["email"])))
     {
-        $user_email = $_POST["email"];
+        $user_email = clean_data($_POST["email"]);
         $user_stmt = $conn->prepare("SELECT user_id, name, password, is_enabled, is_admin 
                                         FROM p39_users WHERE email = ?");
         $user_stmt->bind_param("s",$user_email);
@@ -77,29 +78,29 @@ if (isset($_POST["sign_in_btn"])):
                 else
                 {
                     // Password doesn't match database, but I won't let the user know user exists for security concerns
-                    $_SESSION["error"]["login"]["password"] = "Incorrect credentials, please try again";
-                    header("location:login.php");
+                    $_SESSION["error"]["login"]["password"] = "البيانات غير صحيحة. يرجى إعادة المحاولة";
+                    header("location:login.php", true, 303);
                 }
             }
             else
             {
                 // User is not allowed to log into the system
-                $_SESSION["error"]["login"]["not_allowed"] = "You're not allowed to log into the system";
-                header("location:login.php");
+                $_SESSION["error"]["login"]["not_allowed"] = "غير مسموح لك بالدخول إلى النظام لأن حسابك غير مفعل";
+                header("location:login.php", true, 303);
             }
         }
         else
         {
             // Email doesn't exist in database
-            $_SESSION["error"]["login"]["user_not_found"] = "User not found, please contact system administrator";
-            header("location:login.php");
+            $_SESSION["error"]["login"]["user_not_found"] = "هذا المستخدم غير مسجل في النظام";
+            header("location:login.php", true, 303);
         }
     }
     else
     {
         // Email doesn't meet the standards
-        $_SESSION["error"]["login"]["email"] = "Incorrect email format";
-        header("location:login.php");
+        $_SESSION["error"]["login"]["email"] = "يرجى إدخال الإيميل بطريقة صحيحة";
+        header("location:login.php", true, 303);
     }
 else:
     echo"You Need to use POST to view this page";

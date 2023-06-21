@@ -36,7 +36,12 @@ if (is_logged_in() AND !$_SESSION["admin"] AND isset($_POST["voting_btn"])):
             $vote_types_result = $vote_types_stmt->get_result();
             if (!$subject_vote_exists) { ?>
                 <div class="box">
+                    <?php if (@$_SESSION["error"]["add"]) { ?>
+                        <p class="login-error">يرجى اختيار حقل</p>
+		                <?php unset($_SESSION["error"]["add"]);
+	                } ?>
                     <form action="addition_code.php" method="post">
+
                         <div class="row vote-radio">
                             <?php while ($vote_types_row = $vote_types_result->fetch_assoc()) { ?>
                                 <div class="col">

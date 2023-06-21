@@ -30,6 +30,8 @@ for (let i = 0; i < uploadLabel.length; i++) {
 	});
 }
 
+// Make The Photo Uploaded Appears As a Preview
+
 const buttons = document.querySelectorAll(".upload-button");
 const fileLists = document.querySelectorAll(".file-list");
 
@@ -56,16 +58,24 @@ function displayFile(files, fileList) {
 	}
 }
 
-console.log("AYMAN");
-
 // Links Toggler
 
 const toggler = document.querySelector("nav ul .icon");
 const linksDiv = document.querySelector("nav ul .links");
-const linksDivOpen = document.querySelector("nav ul .links.open");
 
 toggler.addEventListener("click", () => {
 	linksDiv.classList.toggle("open");
+
+	// Make the search in the start of the nav when the links are open
+	if (linksDiv.classList.contains("open")) {
+		document.querySelector(".search").style.alignItems = "flex-start";
+	}
+	// Make the search bar in center when the links aren't open, and it delay the action by the transition duration of the links animation
+	else {
+		setTimeout(() => {
+			document.querySelector(".search").style.alignItems = "center";
+		}, Number(getComputedStyle(linksDiv).transitionDuration.slice(0, 3) * 1000));
+	}
 });
 
 // mohamed fathi
@@ -82,3 +92,15 @@ openButton.forEach((openBtn) => {
 // closeButton.addEventListener("click", () => {
 //   modal.close();
 // });
+
+console.log(
+	`Made By:
+
+Mohamed Ayman Gamal
+Mohamed Fathi Salah
+Mahmoud Badr
+
+Omar Ayman
+Mohamed Rabea
+Mahmoud Ashraf`
+);

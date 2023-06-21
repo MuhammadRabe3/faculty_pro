@@ -25,8 +25,17 @@ if (is_admin()):
                 <h1>إضافة عضو جديد</h1>
             </div>
             <form class="box" method="post" action="addition_code.php" enctype="multipart/form-data">
+	            <?php if (@$_SESSION["error"]["add"]) { ?>
+                    <p class="login-error">يرجى إدخال جميع الحقول</p>
+		            <?php unset($_SESSION["error"]["add"]);
+	            }
+                if (!empty($_SESSION["error"]["login"]["email"])) { ?>
+                    <p class="login-error">
+                        <?php echo $_SESSION["error"]["login"]["email"];
+                        unset($_SESSION["error"]["login"]["email"]); ?>
+                    </p>
+                <?php } ?>
                 <div class="col">
-
                     <div class="row">
                         <h4>الاسم بالكامل</h4><input type="text" name="name" placeholder="الاسم بالكامل" required/>
                     </div>
@@ -42,13 +51,11 @@ if (is_admin()):
                                                          required/>
                     </div>
                     <div class="row">
-
                         <h4>كلمة السر</h4>
                         <div class="password-box">
                             <input type="password" name="password" placeholder="كلمة السر" required/> <i
                                     class="fa-solid fa-eye-slash"></i>
                         </div>
-
                     </div>
                     <!--          <div class="row">-->
                     <!--            <h4>رقم التليفون</h4><input type="text" placeholder="رقم التليفون" />-->
@@ -60,7 +67,7 @@ if (is_admin()):
                     <div class="row">
                         <h4>الفئة الوظيفية</h4>
                         <div class="select-basic">
-                            <select name="job_type" required>
+                            <select name="job_type" >
                                 <option value="">اختر</option>
 								<?php
 								// Get All Job Types
@@ -141,10 +148,6 @@ if (is_admin()):
                             </div>
                             <div class="file-list"></div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <h4>ملاحظات</h4>
-                        <textarea name=""></textarea>
                     </div>
                     <div class="row">
                         <button type="submit" class="btn-basic" name="add_member_btn">اضافة عضو جديد</button>

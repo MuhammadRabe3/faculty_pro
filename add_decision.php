@@ -15,13 +15,17 @@ if (session_status() === PHP_SESSION_NONE) {
     <?php if (is_admin()): ?>
         <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
             <?php Nav(); ?>
-            <main class="add-member-page">
+            <main class="add-member-page add-decision-page">
                 <div class="container">
                     <!-- عنوان الصفحة -->
                     <div class="title">
                         <h1>إضافة قرار</h1>
                     </div>
                     <form class="box" method="post" action="addition_code.php" enctype="multipart/form-data">
+	                    <?php if (@$_SESSION["error"]["add"]) { ?>
+                            <p class="login-error">يرجى إدخال جميع الحقول</p>
+		                    <?php unset($_SESSION["error"]["add"]);
+	                    } ?>
                         <div class="col">
                             <div class="row sp-row">
                                 <h4>نوع القرار</h4>
@@ -84,10 +88,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             </main>
         <?php } else { ?>
-            <p style="color: red; font-weight: bold; text-align: center;">
-                يجب استخدام POST لتحميل الصفحة. سيتم تحويلك إلى صفحة المجالس بعد 5 ثواني. أو اضغط<a href="meetings.php">
-                    هنا</a>
-            </p>
+            <div class="error">
+                <img src="./images/icons/error.svg" alt="">
+                <p>
+                    يجب الدخول للصفحة من خلال صفحة المجالس. سيتم تحويلك إلى صفحة المجالس بعد 5 ثواني.
+                </p>
+            </div>
+
             <?php header("refresh: 5; url= meetings.php"); ?>
         <?php } ?>
     <?php endif; ?>

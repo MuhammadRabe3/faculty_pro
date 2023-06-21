@@ -33,6 +33,7 @@ VALUES ("عميد"),
        ("رئيس قسم"),
        ("عضو هيئة تدريس"),
        ("إداري"),
+       ("عضو حارجي"),
        ("أخرى");
 
 CREATE TABLE IF NOT EXISTS p39_job_rank
@@ -108,6 +109,7 @@ CREATE TABLE IF NOT EXISTS p39_formation_user
     formation_id SMALLINT UNSIGNED,
     user_id      SMALLINT UNSIGNED,
     job_title    varchar(255),
+    PRIMARY KEY (formation_id, user_id),
     FOREIGN KEY (formation_id) REFERENCES p39_formation (formation_id) ON UPDATE CASCADE ON DELETE NO ACTION,
     FOREIGN KEY (user_id) REFERENCES p39_users (user_id) ON UPDATE CASCADE ON DELETE NO ACTION
 );
@@ -133,7 +135,7 @@ CREATE TABLE IF NOT EXISTS p39_meeting
     meeting_date   DATE                                      DEFAULT NULL,
     is_current     TINYINT UNSIGNED                          DEFAULT 1,
     status         ENUM ("pending", "confirmed", "finished") DEFAULT "pending",
-    is_showed      TINYINT UNSIGNED                          DEFAULT 0,
+    is_shown       TINYINT UNSIGNED                          DEFAULT 0,
     formation_id   SMALLINT UNSIGNED,
     added_on       TIMESTAMP                                 DEFAULT CURRENT_TIMESTAMP,
     added_by       SMALLINT UNSIGNED,
@@ -306,7 +308,9 @@ CREATE TABLE IF NOT EXISTS p39_vote
 INSERT INTO p39_vote_type (vote_type_name)
 VALUES ("موافقة"),
        ("رفض"),
-       ("امتناع");
+       ("امتناع"),
+       ("تحفظ"),
+       ("انسحاب");
 
 
 ###### Dummy Data #######

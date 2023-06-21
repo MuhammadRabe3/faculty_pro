@@ -8,6 +8,7 @@
 	--main-font: "Tajawal", sans-serif;
 	--checkmark: url("../images/icons/checkmark.svg");
 	--box-radius: 15px;
+	--error-color: red;
 
 	/* CSS HEX */
 	--headings-color: #294862;
@@ -200,7 +201,6 @@ nav ul li a {
 	border-radius: 7px;
 	box-shadow: inset 0 0 0 0 var(--main-color);
 	color: var(--main-color);
-	margin: 0 -0.25rem;
 	padding: 0 0.25rem;
 	transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
@@ -291,18 +291,18 @@ footer p {
 }
 
 /* 2. text input fields */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-input[type="number"],
+input,
 textarea {
 	outline: 0;
 	margin: 10px;
 	padding: 7px;
 	width: 50vmin;
-	border: 2px solid var(--main-color);
+	border: 2px solid rgb(121, 121, 121);
 	border-radius: 10px;
+}
+input:focus,
+textarea:focus {
+	border: 2px solid var(--main-color);
 }
 
 input[type="number"] {
@@ -373,8 +373,7 @@ input[type="radio"]:checked {
 .search {
 	display: flex;
 	justify-content: center;
-
-	align-items: flex-start;
+	align-items: center;
 }
 .search button,
 .search input {
@@ -450,7 +449,6 @@ input[type="radio"]:checked {
 	border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
 	cursor: pointer;
 	user-select: none;
-	border-radius: 0 7px 7px 0;
 }
 
 .select-items {
@@ -464,9 +462,12 @@ input[type="radio"]:checked {
 .search .select-items {
 	position: absolute;
 }
+.search .select-selected {
+	border-radius: 0 7px 7px 0;
+}
 .search .select-basic {
 	width: 23vmin;
-	min-width: 100px;
+	min-width: 17ch;
 }
 .select-hide {
 	display: none;
@@ -533,9 +534,14 @@ input[type="file"] {
 	height: 50px;
 }
 .error p {
-	color: rgb(144, 41, 41);
+	color: var(--error-color);
 	font-size: 1.3rem;
 	font-weight: 800;
+}
+.login-error {
+	color: var(--error-color);
+	font-weight: bold;
+	text-align: center;
 }
 
 /* Printing Stuff */
@@ -563,6 +569,7 @@ input[type="file"] {
 		display: none;
 	}
 	header .header-container {
+		display: flex;
 		justify-content: center;
 	}
 	header .univ-logo {
@@ -573,6 +580,7 @@ input[type="file"] {
 		page-break-inside: avoid;
 	}
 	.table-container {
+		overflow-x: none;
 		margin: 0;
 	}
 }

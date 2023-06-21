@@ -34,7 +34,7 @@ if (session_status() === PHP_SESSION_NONE)
         $n = 1;
         if (in_array($meeting_row["fid"], $_SESSION["formation_ids"]) || $_SESSION["admin"]) { ?>
             <main class="subjects-table-page">
-                <div class="container">
+                
                     <div class="title">
                         <h1> جدول الأعمال </h1>
     <!--                </div>-->
@@ -112,7 +112,7 @@ if (session_status() === PHP_SESSION_NONE)
                             </main>
                         </div>
                     <?php } ?>
-                </div>
+                
             </main>
         <?php } else {
             header("location: index.php", true, 303);

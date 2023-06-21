@@ -16,7 +16,7 @@ Head("تعديل موضوع");
 <?php Headers(); ?>
 <?php if (is_admin()): ?>
     <?php Nav(); ?>
-    <main class="add-member-page">
+    <main class="add-member-page update-subject-page">
         <div class="container">
             <!-- عنوان الصفحة -->
             <div class="title">

@@ -89,43 +89,33 @@ Head("تعديل تشكيل");
                             </select>
                         </div>
                     </div>
-                    <?php
-                    if (!$formation_meetings_exist AND !$formation_user_exist)
-                    {
-                        ?>
+                    <input type="hidden" name="formation_id" value="<?= $_POST['formation_id'] ?>">
+                    <form method="post" action="update_code.php">
                         <div class="row sp2-row">
-                            <input type="hidden" name="formation_id" value="<?= $_POST['formation_id'] ?>">
                             <button type="submit" class="btn-basic" name="update_formation_btn">تعديل التشكيل</button>
-                            <form method="post" action="deletion_code.php">
+                        </div>
+                    </form>
+
+                    <form method="post" action="deletion_code.php" enctype="multipart/form-data">
+                        <?php if(!$formation_meetings_exist AND !$formation_user_exist): ?>
+                            <div class="row sp2-row">
                                 <input type="hidden" name="formation_id" value="<?= $_POST['formation_id'] ?>">
                                 <button type="submit" class="btn-basic" name="delete_formation_btn">حذف التشكيل</button>
-                            </form>
-                        </div>
-                        <?php
-                    }
-                    elseif ($formation_user_exist)
-                    {
-	                    ?>
+                            </div>
+                    </form>
+
+                    <?php elseif ($formation_user_exist): ?>
                         <div class="row sp2-row">
-                            <input type="hidden" name="formation_id" value="<?= $_POST['formation_id'] ?>">
-                            <button type="submit" class="btn-basic" name="update_formation_btn">تعديل التشكيل</button>
                             <button type="button" class="btn-basic disabled" disabled
                                     title="لا يمكن حذف التشكيل في وجود أعضاء بداحله">حذف التشكيل</button>
                         </div>
-	                    <?php
-                    }
-                    elseif ($formation_meetings_exist)
-                    {
-	                    ?>
+                    <?php
+                    elseif ($formation_meetings_exist): ?>
                         <div class="row sp2-row">
-                            <input type="hidden" name="formation_id" value="<?= $_POST['formation_id'] ?>">
-                            <button type="submit" class="btn-basic" name="update_formation_btn">تعديل التشكيل</button>
                             <button type="button" class="btn-basic disabled" disabled
                                     title="لا يمكن حذف التشكيل في وجود مجالس بداحله">حذف التشكيل</button>
                         </div>
-	                    <?php
-                    }
-                    ?>
+                    <?php endif; ?>
                 </div>
             </form>
         </div>

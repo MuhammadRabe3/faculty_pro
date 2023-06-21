@@ -136,30 +136,54 @@ function SearchBar()
                                 <option value="mn" selected>رقم المجلس</option>
                                 <option value="fn">رقم التشكيل</option>
                                 <option value="my">سنة المجلس</option>
+                                <option value="sn">عنوان الموضوع</option>
+                                <option value="sd">تفاصيل الموضوع</option>
                                 <?php break;
                             case "fn": ?>
 	                            <option value="">عن طريق</option>
                                 <option value="mn">رقم المجلس</option>
                                 <option value="fn" selected>رقم التشكيل</option>
                                 <option value="my">سنة المجلس</option>
+                                <option value="sn">عنوان الموضوع</option>
+                                <option value="sd">تفاصيل الموضوع</option>
                                 <?php break;
                             case "my": ?>
                                 <option value="">عن طريق</option>
                                 <option value="mn">رقم المجلس</option>
                                 <option value="fn">رقم التشكيل</option>
                                 <option value="my" selected>سنة المجلس</option>
+                                <option value="sn">عنوان الموضوع</option>
+                                <option value="sd">تفاصيل الموضوع</option>
                                 <?php break;
+	                        case "sn": ?>
+                                <option value="">عن طريق</option>
+                                <option value="mn">رقم المجلس</option>
+                                <option value="fn">رقم التشكيل</option>
+                                <option value="my">سنة المجلس</option>
+                                <option value="sn" selected>عنوان الموضوع</option>
+                                <option value="sd">تفاصيل الموضوع</option>
+		                        <?php break;
+	                        case "sd": ?>
+                                <option value="">عن طريق</option>
+                                <option value="mn">رقم المجلس</option>
+                                <option value="fn">رقم التشكيل</option>
+                                <option value="my">سنة المجلس</option>
+                                <option value="sn">عنوان الموضوع</option>
+                                <option value="sd" selected>تفاصيل الموضوع</option>
+		                        <?php break;
                             default: ?>
                                 <option value="">عن طريق</option>
                                 <option value="mn">رقم المجلس</option>
                                 <option value="fn">رقم التشكيل</option>
                                 <option value="my">سنة المجلس</option>
+                                <option value="sn">عنوان الموضوع</option>
+                                <option value="sd">تفاصيل الموضوع</option>
                                 <?php break;
                         } ?>
                     </select>
                 </div>
                 <input type="text" placeholder="ابحث عن مجلس" name="search"/>
-                <button type="submit" class="btn-basic">
+                <button type="submit" class="btn-basic" name="search_btn">
                     <i class="fa fa-search"></i>
                 </button>
 				<?php break;
@@ -378,4 +402,18 @@ function Delete($conn, $table, $where)
 {
     $delete_stmt = $conn->prepare("DELETE FROM {$table} WHERE {$where}");
     return $delete_stmt;
+}
+
+function Validate(array $inputs)
+{
+    $error = false;
+    foreach ($inputs as $input)
+    {
+        if (empty($_POST[$input]))
+        {
+            $error = true;
+            return $error;
+        }
+    }
+    return $error;
 }

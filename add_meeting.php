@@ -30,8 +30,7 @@ if (is_admin()):
 	$last_meeting_stmt->execute();
 	$last_meeting_result = $last_meeting_stmt->get_result();
 	$last_meeting_row = $last_meeting_result->fetch_assoc();
-	@$last_meeting_number = $last_meeting_row["meeting_number"];
-	?>
+	@$last_meeting_number = $last_meeting_row["meeting_number"]; ?>
 	<main class="add-member-page">
 		<div class="container">
 			<!-- عنوان الصفحة -->
@@ -39,6 +38,10 @@ if (is_admin()):
 				<h1>إضافة مجلس جديد</h1>
 			</div>
 			<form class="box" method="post" action="addition_code.php">
+                <?php if (@$_SESSION["error"]["add"]) { ?>
+                    <p class="login-error">يرجى إدخال جميع الحقول</p>
+                    <?php unset($_SESSION["error"]["add"]);
+                } ?>
 				<div class="col">
 					<div class="row">
 						<h4>رقم المجلس</h4>
@@ -72,7 +75,7 @@ if (is_admin()):
 						<h4>الشهر</h4>
 						<div class="select-basic">
 							<select name="month" required>
-								<option>اختر</option>
+								<option value="">اختر</option>
 								<?php
 								$meeting_years = array();
 								while ($meeting_months_row = $meeting_months_result->fetch_assoc())
@@ -95,7 +98,7 @@ if (is_admin()):
 							<select name="year" required>
 								<option value="">اختر</option>
 								<?php foreach ($meeting_years as $year) { ?>
-									<option value="<?= $year ?>"><?= $year ?></option>
+									<option value="<?= $year ?>"><?= ($year + 1) . '-' . $year ?></option>
 								<?php } ?>
 							</select>
 						</div>

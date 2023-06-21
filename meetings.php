@@ -61,7 +61,7 @@ if (session_status() === PHP_SESSION_NONE)
                                     <!-- Break While loop if no current meeting -->
                                     <?php break;
                                 }
-                                if ($current_meeting_row["is_showed"] == "0" AND !$_SESSION["admin"])
+                                if ($current_meeting_row["is_shown"] == "0" AND !$_SESSION["admin"])
                                 { ?>
                                     <div class="current-meeting">
                                         <main id="empty" class="empty-meeting">
@@ -71,7 +71,7 @@ if (session_status() === PHP_SESSION_NONE)
                                     <!-- Break While loop if no current meeting -->
 	                                <?php break;
                                 }
-                                switch ($current_meeting_row["is_showed"])
+                                switch ($current_meeting_row["is_shown"])
                                 {
                                     ### If meeting is not showed, then only admins may see it
                                     case "0":
@@ -103,6 +103,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                     </h4>
                                                     <h4>
                                                         حالة المجلس:
+                                                        <span>
                                                         <?php
                                                         switch ($current_meeting_row["status"])
                                                         {
@@ -120,6 +121,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                                 break;
                                                         }
                                                         ?>
+                                                        </span>
                                                     </h4>
                                                     <h4>
                                                         تاريخ الانعقاد:
@@ -282,10 +284,10 @@ if (session_status() === PHP_SESSION_NONE)
                                                                         </button>
                                                                     </form>
                                                                 </dialog>
-	                                                            <?php if ($current_meeting_row["is_showed"] == "0") { ?>
+	                                                            <?php if ($current_meeting_row["is_shown"] == "0") { ?>
                                                                     <button class="btn-basic" data-open-modal>
                                                                         إظهار المجلس
-                                                                        <i class="fa-solid fa-check"></i>
+                                                                        <i class="fa-solid fa-eye"></i>
                                                                     </button>
                                                                     <dialog data-modal>
                                                                         <h4>
@@ -304,7 +306,7 @@ if (session_status() === PHP_SESSION_NONE)
 	                                                            <?php } else { ?>
                                                                     <button class="btn-basic" data-open-modal>
                                                                         إخفاء المجلس
-                                                                        <i class="fa-solid fa-check"></i>
+                                                                        <i class="fa-solid fa-eye-slash"></i>
                                                                     </button>
                                                                     <dialog data-modal>
                                                                         <h4>
@@ -373,7 +375,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                             <div class="col">
                                                                 <button data-open-modal class="btn-basic">
                                                                     إلغاء التأكيد
-                                                                    <i class="fa-solid fa-check"></i>
+                                                                    <i class="fa-solid fa-x"></i>
                                                                 </button>
                                                                 <dialog data-modal>
                                                                     <form method="post" action="meeting_status.php">
@@ -390,7 +392,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                                 </dialog>
                                                                 <button data-open-modal class="btn-basic">
                                                                     تحويل لمجلس سابق
-                                                                    <i class="fa-solid fa-check"></i>
+                                                                    <i class="fa-solid fa-down-long"></i>
                                                                 </button>
                                                                 <dialog data-modal>
                                                                     <form method="post" action="meeting_status.php">
@@ -398,15 +400,15 @@ if (session_status() === PHP_SESSION_NONE)
                                                                         <input type="hidden" name="meeting_id" value="<?=$current_meeting_row['meeting_id']?>">
                                                                         <button class="btn-basic" name="past_btn">
                                                                             تحويل لمجلس سابق
-                                                                            <i class="fa-solid fa-check"></i>
+                                                                            <i class="fa-solid fa-down-long"></i>
                                                                         </button>
                                                                         <button type="submit" formmethod="dialog" class="btn-basic">لا</button>
                                                                     </form>
                                                                 </dialog>
-                                                                <?php if ($current_meeting_row["is_showed"] == "0") { ?>
+                                                                <?php if ($current_meeting_row["is_shown"] == "0") { ?>
                                                                     <button class="btn-basic" data-open-modal>
                                                                         إظهار المجلس
-                                                                        <i class="fa-solid fa-check"></i>
+                                                                        <i class="fa-solid fa-eye"></i>
                                                                     </button>
                                                                     <dialog data-modal>
                                                                         <h4>
@@ -425,7 +427,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                                 <?php } else { ?>
                                                                     <button class="btn-basic" data-open-modal>
                                                                         إخفاء المجلس
-                                                                        <i class="fa-solid fa-check"></i>
+                                                                        <i class="fa-solid fa-eye-slash"></i>
                                                                     </button>
                                                                     <dialog data-modal>
                                                                         <h4>
@@ -490,7 +492,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                     case "finished":
 	                                                    if ($_SESSION["admin"]) { ?>
                                                         <div class="col">
-                                                            <button data-open-modal class="btn-basic">تحويل لمجلس سابق <i class="fa-solid fa-check"></i></button>
+                                                            <button data-open-modal class="btn-basic">تحويل لمجلس سابق <i class="fa-solid fa-down-long"></i></button>
                                                             <dialog data-modal>
                                                                 <form method="post" action="meeting_status.php">
                                                                     <div class="col">
@@ -499,17 +501,17 @@ if (session_status() === PHP_SESSION_NONE)
                                                                                value="<?=$current_meeting_row['meeting_id']?>">
                                                                         <button class="btn-basic" name="past_btn">
                                                                             تحويل لمجلس سابق
-                                                                            <i class="fa-solid fa-check"></i>
+                                                                            <i class="fa-solid fa-down-long"></i>
                                                                         </button>
                                                                         <button type="submit" formmethod="dialog" class="btn-basic">لا</button>
                                                                     </div>
                                                                 </form>
                                                             </dialog>
 
-                                                            <?php if ($current_meeting_row["is_showed"] == "0") { ?>
+                                                            <?php if ($current_meeting_row["is_shown"] == "0") { ?>
                                                                 <button class="btn-basic" data-open-modal>
                                                                     إظهار المجلس
-                                                                    <i class="fa-solid fa-check"></i>
+                                                                    <i class="fa-solid fa-eye"></i>
                                                                 </button>
                                                                 <dialog data-modal>
                                                                     <h4>
@@ -528,7 +530,7 @@ if (session_status() === PHP_SESSION_NONE)
                                                             <?php } else { ?>
                                                                 <button class="btn-basic" data-open-modal>
                                                                     إخفاء المجلس
-                                                                    <i class="fa-solid fa-check"></i>
+                                                                    <i class="fa-solid fa-eye-slash"></i>
                                                                 </button>
                                                                 <dialog data-modal>
                                                                     <h4>
@@ -660,6 +662,7 @@ if (session_status() === PHP_SESSION_NONE)
                                             </h4>
                                             <h4>
                                                 حالة المجلس:
+                                                <span>
 	                                            <?php
 	                                            switch ($past_meetings_row["status"])
 	                                            {
@@ -677,6 +680,7 @@ if (session_status() === PHP_SESSION_NONE)
 			                                            break;
 	                                            }
 	                                            ?>
+                                                </span>
                                             </h4>
                                         </div>
 	                                    <?php if ($_SESSION["admin"]) {
@@ -878,6 +882,36 @@ if (session_status() === PHP_SESSION_NONE)
                                                             ON m.formation_id = f.formation_id 
                                                                    AND m.meeting_year LIKE ?";
 			                    break;
+                            case "sn":
+                                $search_stmt = "SELECT
+                                                    m.*,
+                                                    f.formation_number
+                                                FROM
+                                                    p39_meeting AS m
+                                                JOIN p39_subject AS s
+                                                ON
+                                                    m.meeting_id = s.subject_id
+                                                JOIN p39_formation AS f
+                                                ON
+                                                    f.formation_id = m.formation_id
+                                                WHERE
+                                                    s.subject_name LIKE ?";
+                                break;
+                            case "sd":
+	                            $search_stmt = "SELECT
+                                                    m.*,
+                                                    f.formation_number
+                                                FROM
+                                                    p39_meeting AS m
+                                                JOIN p39_subject AS s
+                                                ON
+                                                    m.meeting_id = s.subject_id
+                                                JOIN p39_formation AS f
+                                                ON
+                                                    f.formation_id = m.formation_id
+                                                WHERE
+                                                    s.subject_details LIKE ?";
+	                            break;
 	                    }
 	                    $restricted_search_count = 0;
 	                    $search_result = Search($conn, NULL, @$search_stmt);
@@ -905,7 +939,7 @@ if (session_status() === PHP_SESSION_NONE)
 				                    }
 				                    continue;
 			                    }
-			                    if ($search_row["is_showed"] == "0" AND !$_SESSION["admin"])
+			                    if ($search_row["is_shown"] == "0" AND !$_SESSION["admin"])
 			                    {
 				                    $restricted_search_count += 1;
 				                    if ($restricted_search_count == $search_result_count)

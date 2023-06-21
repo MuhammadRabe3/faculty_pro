@@ -15,7 +15,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <?php Headers(); ?>
 <?php if (is_admin()): ?>
 	<?php Nav(); ?>
-    <main class="add-member-page">
+    <main class="add-member-page add-decision-page">
         <div class="container">
             <!-- عنوان الصفحة -->
             <div class="title">

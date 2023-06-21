@@ -204,9 +204,9 @@ if (is_logged_in()):
                                                                 تفاصيل الموضوع
                                                             </button>
                                                         </div>
-                                                        <?php if ($status == "finished") { ?>
+                                                        <?php if ($status != "pending") { ?>
                                                             <div class="col">
-                                                                <button type="button" title="لا يمكن تعديل موضوع في مجلس نهائي"
+                                                                <button type="button" title="لا يمكن تعديل موضوع إلا في مجلس غير مؤكد"
                                                                         class="btn-basic disabled" disabled>تعديل الموضوع</button>
                                                             </div>
                                                         <?php } else { ?>
@@ -303,13 +303,13 @@ if (is_logged_in()):
                             ?>
                             </div>
                             <div class="add-current-subject">
-                                <?php if (@$status != "finished") { ?>
+                                <?php if (@$status == "pending") { ?>
                                     <form method="post" action="add_subject.php">
                                         <input type="hidden" name="meeting_id" value="<?= $search ?>">
                                         <button name="add_subject_btn" class="btn-basic">إضافة موضوع</button>
                                     </form>
                                 <?php } else { ?>
-                                    <button title="لا يمكن إضافة موضوع في مجلس نهائي" type="button" class="btn-basic disabled" disabled>إضافة موضوع</button>
+                                    <button title="لا يمكن إضافة موضوع إلا في مجلس غير مؤكد" type="button" class="btn-basic disabled" disabled>إضافة موضوع</button>
                                 <?php } ?>
                             </div>
                             <?php

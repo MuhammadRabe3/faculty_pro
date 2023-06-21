@@ -53,7 +53,7 @@ foreach ($_POST as $key=>$value)
 
 		case "show_btn":
 			$is_showed = 1;
-			$show_meeting_stmt = $conn->prepare("UPDATE p39_meeting SET is_showed = ? WHERE meeting_id = ?");
+			$show_meeting_stmt = $conn->prepare("UPDATE p39_meeting SET is_shown = ? WHERE meeting_id = ?");
 			$show_meeting_stmt->bind_param("ii", $is_showed, $_POST["meeting_id"]);
 			$show_meeting_stmt->execute();
 			header("location: meetings.php", true, 303);
@@ -61,7 +61,7 @@ foreach ($_POST as $key=>$value)
 
 		case "hide_btn":
 			$is_showed = 0;
-			$hide_meeting_stmt = $conn->prepare("UPDATE p39_meeting SET is_showed = ? WHERE meeting_id = ?");
+			$hide_meeting_stmt = $conn->prepare("UPDATE p39_meeting SET is_shown = ? WHERE meeting_id = ?");
 			$hide_meeting_stmt->bind_param("ii", $is_showed, $_POST["meeting_id"]);
 			$hide_meeting_stmt->execute();
 			header("location: meetings.php", true, 303);

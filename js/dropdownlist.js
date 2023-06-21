@@ -1,7 +1,7 @@
 // Drop Down List Function
 
 export function dropDownList() {
-	var x, i, j, l, ll, selElmnt, a, b, c;
+	let x, i, j, l, ll, selElmnt, a, b, c;
 	/*look for any elements with the class "select-basic":*/
 	x = document.getElementsByClassName("select-basic");
 	l = x.length;
@@ -25,7 +25,7 @@ export function dropDownList() {
 			c.addEventListener("click", function (e) {
 				/*when an item is clicked, update the original select box,
         and the selected item:*/
-				var y, i, k, s, h, sl, yl;
+				let y, i, k, s, h, sl, yl;
 				s = this.parentNode.parentNode.getElementsByTagName("select")[0];
 				sl = s.length;
 				h = this.parentNode.previousSibling;
@@ -59,7 +59,7 @@ export function dropDownList() {
 	function closeAllSelect(elmnt) {
 		/*a function that will close all select boxes in the document,
   except the current select box:*/
-		var x,
+		let x,
 			y,
 			i,
 			xl,

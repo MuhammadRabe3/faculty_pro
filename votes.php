@@ -54,7 +54,9 @@ if (is_admin()):
                 $votes_count_stmt = $conn->prepare("SELECT
                                                         SUM(v.vote_type_id = 1) AS vy,
                                                         SUM(v.vote_type_id = 2) AS vn,
-                                                        SUM(v.vote_type_id = 3) AS vab
+                                                        SUM(v.vote_type_id = 3) AS vab,
+                                                        SUM(v.vote_type_id = 4) AS t7,
+                                                        SUM(v.vote_type_id = 5) AS en
                                                     FROM
                                                         p39_vote AS v
                                                     WHERE 
@@ -65,7 +67,9 @@ if (is_admin()):
                 $votes_count_row = $votes_count_result->fetch_assoc();
                 $yes = $votes_count_row["vy"];
                 $no = $votes_count_row["vn"];
-                $ab = $votes_count_row["vab"]; ?>
+                $ab = $votes_count_row["vab"];
+                $t7 = $votes_count_row["t7"];
+                $en = $votes_count_row["en"]; ?>
                 <div class="piechart">
                     <div id="piechart"></div>
                 </div>
@@ -118,14 +122,18 @@ if (is_admin()):
         const yes = <?php echo($yes)?>;
         const no = <?php echo($no)?>;
         const ab = <?php echo($ab)?>;
-        var data = google.visualization.arrayToDataTable([
+        const t7 = <?php echo($t7)?>;
+        const en = <?php echo($en)?>;
+        let data = google.visualization.arrayToDataTable([
             ['نوع', 'النسبة'],
             ['الموافقة', yes],
             ['الرفض', no],
-            ['الامتناع', ab]
+            ['الامتناع', ab],
+            ['تحفظ', t7],
+            ['انسحاب', en]
         ]);
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        let chart = new google.visualization.PieChart(document.getElementById('piechart'));
         chart.draw(data);
 
 

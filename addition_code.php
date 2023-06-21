@@ -12,6 +12,13 @@ foreach ($_POST as $btn => $value)
 	switch ($btn)
 	{
 		case "add_formation_btn":
+			$inputs = array("formation_number", "start_year");
+			if (Validate($inputs))
+			{
+				$_SESSION["error"]["add"] = true;
+				header("location: add_formation.php", true, 303);
+				break;
+			}
 			$formation_number = $_POST["formation_number"];
 			$start_year = $_POST["start_year"];
 			$is_current = 1;
@@ -120,6 +127,13 @@ foreach ($_POST as $btn => $value)
 			break;
 
 		case "add_meeting_btn":
+			$inputs = array("number", "month", "year");
+			if (Validate($inputs))
+			{
+				$_SESSION["error"]["add"] = true;
+				header("location: add_meeting.php", true, 303);
+				break;
+			}
 			$number = clean_data($_POST["number"]);
 			$month = clean_data($_POST["month"]);
 			$year = clean_data($_POST["year"]);
@@ -149,6 +163,13 @@ foreach ($_POST as $btn => $value)
 			break;
 
 		case "add_member_btn":
+			$inputs = array("name", "gender", "email");
+			if (Validate($inputs))
+			{
+				$_SESSION["error"]["add"] = true;
+				header("location: add_member.php", true, 303);
+				break;
+			}
 			$name = clean_data($_POST["name"]);
 			$gender = clean_data($_POST["gender"]);
 			$email = is_valid_email($_POST["email"]);
@@ -160,66 +181,72 @@ foreach ($_POST as $btn => $value)
 			$is_enabled = 1;
 			if ($email)
 			{
-				if (!$name || !$job_title || !$gender || !$job_type || !$job_rank || !$department)
+				$password = clean_data($_POST["password"]);
+				$hash = password_hash($password, PASSWORD_DEFAULT);
+				$member_insert_stmt = $conn->prepare("INSERT INTO
+                                                        p39_users 
+                                                        (`name`, 
+                                                         `job_title`, 
+                                                         `job_type_id`, 
+                                                         `job_rank_id`, 
+                                                         `department_id`, 
+                                                         `gender`, 
+                                                         `email`, 
+                                                         `password`, 
+                                                         `is_admin`, 
+                                                         `added_by`,
+                                                         `is_enabled`)
+                                                    VALUES
+                                                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$member_insert_stmt->bind_param("ssiiisssiii", $name,
+					$job_title,
+					$job_type,
+					$job_rank,
+					$department,
+					$gender,
+					$email,
+					$hash,
+					$is_admin,
+					$_SESSION["user_id"],
+					$is_enabled);
+				if ($member_insert_stmt->execute())
 				{
-					echo "Missing Data, Please try again";
-				}
-				else
-				{
-					$password = clean_data($_POST["password"]);
-					$hash = password_hash($password, PASSWORD_DEFAULT);
-					$member_insert_stmt = $conn->prepare("INSERT INTO
-                                                            p39_users 
-                                                            (`name`, 
-                                                             `job_title`, 
-                                                             `job_type_id`, 
-                                                             `job_rank_id`, 
-                                                             `department_id`, 
-                                                             `gender`, 
-                                                             `email`, 
-                                                             `password`, 
-                                                             `is_admin`, 
-                                                             `added_by`,
-                                                             `is_enabled`)
-                                                        VALUES
-                                                            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					$member_insert_stmt->bind_param("ssiiisssiii", $name,
-						$job_title,
-						$job_type,
-						$job_rank,
-						$department,
-						$gender,
-						$email,
-						$hash,
-						$is_admin,
-						$_SESSION["user_id"],
-						$is_enabled);
-					if ($member_insert_stmt->execute())
+					// Adding picture attachment
+					$pic_allowed_formats = array("png", "gif", "jpeg", "jpg");
+					$uploaded_pictures = Upload("member_picture", "images/members/", $pic_allowed_formats);
+					if (!empty($uploaded_pictures))
 					{
-						// Adding picture attachment
-						$pic_allowed_formats = array("png", "gif", "jpeg", "jpg");
-						$uploaded_pictures = Upload("member_picture", "images/members/", $pic_allowed_formats);
-						if (!empty($uploaded_pictures))
+						foreach ($uploaded_pictures as $key => $value)
 						{
-							foreach ($uploaded_pictures as $key => $value)
-							{
-								$picture_stmt = $conn->prepare("UPDATE 
-                                                                    p39_users 
-                                                                SET 
-                                                                    image = ? 
-                                                                WHERE 
-                                                                    email = ?");
-								$picture_stmt->bind_param("ss", $value, $email);
-								$picture_stmt->execute();
-							}
+							$picture_stmt = $conn->prepare("UPDATE 
+                                                                p39_users 
+                                                            SET 
+                                                                image = ? 
+                                                            WHERE 
+                                                                email = ?");
+							$picture_stmt->bind_param("ss", $value, $email);
+							$picture_stmt->execute();
 						}
 					}
 				}
+			}
+			else
+			{
+				$_SESSION["error"]["login"]["email"] = "يرجى إدخال الإيميل بطريقة صحيحة";
+				header("location: add_member.php", true, 303);
+				break;
 			}
 			header("location: members.php", true, 303);
 			break;
 
 		case "add_subject_btn":
+			$inputs = array("subject_name", "subject_details", "subject_type");
+			if (Validate($inputs))
+			{
+				$_SESSION["error"]["add"] = true;
+				header("location: add_subject.php", true, 303);
+				break;
+			}
 			$subject_name = clean_data($_POST["subject_name"]);
 			$subject_details = clean_data($_POST["subject_details"]);
 			$subject_type = clean_data($_POST["subject_type"]);
@@ -305,6 +332,13 @@ foreach ($_POST as $btn => $value)
 			break;
 
 		case "add_decision_btn":
+			$inputs = array("decision_type", "decision_details");
+			if (Validate($inputs))
+			{
+				$_SESSION["error"]["add"] = true;
+				header("location: add_decision.php", true, 303);
+				break;
+			}
 			$decision_type = clean_data($_POST["decision_type"]);
 			$decision_details = (empty($_POST["decision_details"])
 				? null
@@ -510,6 +544,13 @@ foreach ($_POST as $btn => $value)
 			break;
 
 		case "add_vote_btn":
+			$inputs = array("vote");
+			if (Validate($inputs))
+			{
+				$_SESSION["error"]["add"] = true;
+				header("location: meetings.php", true, 303);
+				break;
+			}
 			$vote = clean_data($_POST["vote"]);
 			$vote_stmt = $conn->prepare("INSERT INTO 
     												p39_vote (user_id, 
