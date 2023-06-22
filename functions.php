@@ -53,7 +53,7 @@ function Headers()
         </div>
 
         <div class="header-container">
-            <img class="logo univ-logo" src="images/<?= $_SESSION["faculty_logo"] ?>" alt=""/>
+            <a href="./index.php"><img class="logo univ-logo" src="images/<?= $_SESSION["faculty_logo"] ?>" alt=""/></a>
             <div class="header-title">
                 <h3 class="univ-name"><?= $_SESSION["uni_name"] ?> - <?= $_SESSION["faculty_name"] ?></h3>
 
@@ -62,7 +62,7 @@ function Headers()
 					<?= $_SESSION["app_name"] ?>
                 </h1>
             </div>
-            <img class="logo prog-logo" src="images/<?= $_SESSION["program_logo"] ?>" alt=""/>
+            <a href="./index.php"><img class="logo prog-logo" src="images/<?= $_SESSION["program_logo"] ?>" alt=""/></a>
         </div>
 
 
@@ -248,7 +248,7 @@ function Footer()
     $y = date("Y");
     ?>
     <footer>
-        <p>جميع الحقوق محفوظة &copy; لدى فريق رقم 39 Bis Seniors <?=$y?></p>
+        <p>جميع الحقوق محفوظة &copy; لدى  <a href="./credits.php" target="_blank">فريق رقم 39</a> Bis Seniors <?=$y?></p>
     </footer>
     <?php
 }
